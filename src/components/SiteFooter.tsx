@@ -78,7 +78,10 @@ const iconFor = (icon: SocialIcon) => {
 
 export function SiteFooter() {
   return (
-    <footer className="fixed bottom-6 left-6 z-40 flex items-center gap-3 text-hyde-bone-dim">
+    // Mobile: in document flow at the bottom of the page so it scrolls with
+    // the content (only visible after the user scrolls down). Desktop
+    // (`md:`): fixed at bottom-left, always visible.
+    <footer className="relative self-start ml-6 mt-6 z-0 flex items-center gap-3 text-hyde-bone-dim md:fixed md:bottom-6 md:left-6 md:z-40 md:mt-0 md:ml-0">
       {socials.map((s) => (
         <a
           key={s.name}

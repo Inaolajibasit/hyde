@@ -10,7 +10,7 @@ export type Social = {
 // numbers use the international format WITHOUT the leading "+" so the
 // wa.me deep link resolves correctly across mobile and web.
 export const socials: Social[] = [
-  { name: "Instagram", href: "https://instagram.com/hyde", icon: "instagram" },
-  { name: "TikTok", href: "https://tiktok.com/@hyde", icon: "tiktok" },
-  { name: "WhatsApp", href: "https://wa.me/2348000000000", icon: "whatsapp" },
+  { name: "Instagram", href: "https://instagram.com/hyde_labs", icon: "instagram" }, 
+  { name: "TikTok", href: "https://tiktok.com/@hyde_labs", icon: "tiktok" },
+  { name: "WhatsApp", href: "https://wa.me/2348080641916", icon: "whatsapp" },
 ];

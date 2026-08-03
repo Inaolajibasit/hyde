@@ -13,7 +13,9 @@ export function SiteHeader() {
   if (pathname === "/") return null;
 
   return (
-    <header className="fixed top-6 left-6 z-50">
+    // Mobile: in document flow at the top of the page so it scrolls away with
+    // the content. Desktop (`md:`): fixed at top-left, always visible.
+    <header className="relative self-start ml-6 mt-6 z-0 md:fixed md:top-6 md:left-6 md:z-50 md:mt-0 md:ml-0">
       <Link
         href="/"
         aria-label="Back to home"

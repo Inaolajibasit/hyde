@@ -59,8 +59,11 @@ export default function RootLayout({
           <SoundProvider>
             <ThemeToggle />
             <SiteHeader />
-            <SiteFooter />
             {children}
+            {/* SiteFooter sits AFTER {children} so on mobile (where it's
+                relative-positioned) it appears at the bottom of the document
+                flow. On desktop it stays fixed regardless of position. */}
+            <SiteFooter />
           </SoundProvider>
         </ThemeProvider>
       </body>
