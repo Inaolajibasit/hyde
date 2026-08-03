@@ -1,0 +1,10 @@
+node_modules
+.next
+.local-leads
+# Catch every Next.js env file (.env, .env.local, .env.production, etc).
+# See README.md → "Rotating secrets" if a secret in one of these files ever
+# gets published by accident.
+.env*
+!.env.example
+*.log
+.DS_Store

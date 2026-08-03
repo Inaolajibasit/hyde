@@ -1,0 +1,192 @@
+@import "tailwindcss";
+
+:root {
+  /* ---- HYDE brand tokens (dark theme = default) ---- */
+  --hyde-black: #0a0a08;       /* near-black, warm undertone (matches logo bg) */
+  --hyde-black-soft: #121210;
+  --hyde-bone: #ece4d3;        /* ivory / bone */
+  --hyde-bone-dim: #b8ae98;
+  --hyde-chrome: #cdd2d6;      /* metallic highlight, from the horn mark */
+  --hyde-chrome-dim: #8b9096;
+  --hyde-blood: #a8181f;       /* deep red, from the leopard bag script */
+  --hyde-blood-bright: #d4232b;
+  --hyde-gold: #b8912f;        /* muted gold, from the black bag script */
+  --hyde-gold-bright: #d9ab3d;
+  --hyde-khaki: #4a4a37;       /* safari olive/khaki, used sparingly */
+  --hyde-khaki-dim: #2c2c22;
+
+  /* Fixed — does NOT flip with theme. Used as text on top of accent-colored
+     buttons/badges (gold, blood), which need dark text in both themes. */
+  --hyde-ink: #0a0a08;
+
+  --background: var(--hyde-black);
+  --foreground: var(--hyde-bone);
+}
+
+/* ---- Light theme override ---- */
+:root[data-theme="light"] {
+  --hyde-black: #f4efe2;        /* warm sand — becomes the light background */
+  --hyde-black-soft: #e9e1cd;
+  --hyde-bone: #1c1a14;         /* near-black warm — becomes the dark text */
+  --hyde-bone-dim: #5b5646;
+  --hyde-chrome: #6b7176;
+  --hyde-chrome-dim: #9aa0a4;
+  --hyde-blood: #8f1319;
+  --hyde-blood-bright: #a51b22;
+  --hyde-gold: #8c6a1e;
+  --hyde-gold-bright: #a37f28;
+  --hyde-khaki: #a9a58c;
+  --hyde-khaki-dim: #cfc9ae;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-hyde-black: var(--hyde-black);
+  --color-hyde-black-soft: var(--hyde-black-soft);
+  --color-hyde-bone: var(--hyde-bone);
+  --color-hyde-bone-dim: var(--hyde-bone-dim);
+  --color-hyde-chrome: var(--hyde-chrome);
+  --color-hyde-chrome-dim: var(--hyde-chrome-dim);
+  --color-hyde-blood: var(--hyde-blood);
+  --color-hyde-blood-bright: var(--hyde-blood-bright);
+  --color-hyde-gold: var(--hyde-gold);
+  --color-hyde-gold-bright: var(--hyde-gold-bright);
+  --color-hyde-khaki: var(--hyde-khaki);
+  --color-hyde-khaki-dim: var(--hyde-khaki-dim);
+  --color-hyde-ink: var(--hyde-ink);
+
+  --font-display: "Bebas Neue", "Arial Narrow", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-hud: "JetBrains Mono", "Courier New", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  font-size: 0.94rem;
+  line-height: 1.55;
+  overflow-x: hidden;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+::selection {
+  background: var(--hyde-blood);
+  color: var(--hyde-bone);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--hyde-black);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--hyde-khaki);
+}
+
+:focus-visible {
+  outline: 2px solid var(--hyde-gold);
+  outline-offset: 3px;
+}
+
+.hyde-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC44NSIgbnVtT2N0YXZlcz0iMyIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNuKSIvPjwvc3ZnPg==");
+}
+
+:root[data-theme="light"] .hyde-grain {
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+}
+
+.hyde-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 55;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    color-mix(in srgb, var(--hyde-black) 75%, transparent) 100%
+  );
+}
+
+.text-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
+}
+
+.text-hud {
+  font-family: var(--font-hud);
+  letter-spacing: 0.08em;
+}
+
+@keyframes hyde-scan {
+  0% { stroke-dashoffset: 1000; opacity: 0; }
+  15% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+
+@keyframes hyde-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+@keyframes hyde-flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.4; }
+  94% { opacity: 1; }
+  96% { opacity: 0.6; }
+  97% { opacity: 1; }
+}
+
+/* Side-to-side nudge for the active-menu arrow on the start menu. Two
+   oscillations before resting reads as "go" without being annoying — the
+   eye can land on the label between pulses. Pauses cleanly under
+   prefers-reduced-motion via the global override at the bottom of this file. */
+@keyframes hyde-arrow-bounce {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(4px); }
+  40% { transform: translateX(-2px); }
+  60% { transform: translateX(2px); }
+  80% { transform: translateX(-1px); }
+}
+
+.hyde-arrow-bounce {
+  display: inline-block;
+  animation: hyde-arrow-bounce 2.4s ease-in-out infinite;
+}
+
+.animate-hyde-pulse {
+  animation: hyde-pulse 2.4s ease-in-out infinite;
+}
+
+.animate-hyde-flicker {
+  animation: hyde-flicker 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
