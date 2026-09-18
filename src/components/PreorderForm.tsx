@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import { Product, formatNaira } from "@/lib/products";
 import { useSound } from "@/lib/sound-context";
@@ -12,6 +13,7 @@ export function PreorderForm({ product }: { product: Product }) {
   const router = useRouter();
   const { play } = useSound();
   const [quantity, setQuantity] = useState(1);
+  const [photoIndex, setPhotoIndex] = useState(0);
   const [form, setForm] = useState({ name: "", email: "", phone: "", address: "" });
   const [status, setStatus] = useState<"idle" | "submitting" | "queued" | "error">("idle");
   const [message, setMessage] = useState("");
@@ -67,7 +69,7 @@ export function PreorderForm({ product }: { product: Product }) {
   }
 
   return (
-    <main className="min-h-screen bg-hyde-black">
+    <main className="min-h-screen bg-hyde-black pb-28 md:pb-0">
       <div className="hyde-grain" />
       <div className="max-w-5xl mx-auto px-6 sm:px-10 pt-20 pb-8">
         <button
@@ -79,9 +81,46 @@ export function PreorderForm({ product }: { product: Product }) {
 
         <div className="grid md:grid-cols-2 gap-10">
           <div>
-            <div className="relative aspect-square border border-hyde-khaki-dim mb-4">
-              <Image src={product.image[0]} alt={product.name} fill className="object-cover" />
-            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={photoIndex}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.25 }}
+                drag={product.image.length > 1 ? "x" : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.18}
+                onDragEnd={(_, info) => {
+                  if (Math.abs(info.offset.x) < 50 && Math.abs(info.velocity.x) < 500) return;
+                  play("hover");
+                  setPhotoIndex((current) =>
+                    (current + (info.offset.x < 0 ? 1 : -1) + product.image.length) % product.image.length
+                  );
+                }}
+                className="relative aspect-square border border-hyde-khaki-dim mb-4 touch-pan-y"
+              >
+                <Image src={product.image[photoIndex]} alt={`${product.name}, photo ${photoIndex + 1} of ${product.image.length}`} fill className="object-cover" draggable={false} />
+              </motion.div>
+            </AnimatePresence>
+            {product.image.length > 1 && (
+              <div className="mb-5 flex items-center gap-2" role="tablist" aria-label="Product photos">
+                {product.image.map((src, i) => (
+                  <button
+                    key={src}
+                    type="button"
+                    role="tab"
+                    aria-selected={photoIndex === i}
+                    aria-label={`Show photo ${i + 1} of ${product.image.length}`}
+                    onClick={() => setPhotoIndex(i)}
+                    className={`relative size-14 overflow-hidden border cursor-pointer ${photoIndex === i ? "border-hyde-gold" : "border-hyde-khaki-dim opacity-60"}`}
+                  >
+                    <Image src={src} alt="" fill sizes="56px" className="object-cover" />
+                  </button>
+                ))}
+                <span className="ml-auto text-hud text-xs text-hyde-bone-dim md:hidden">Swipe photos</span>
+              </div>
+            )}
             <p
               className="text-hud text-[11px] uppercase tracking-[0.25em] mb-1"
               style={{ color: accentColor }}
@@ -96,7 +135,7 @@ export function PreorderForm({ product }: { product: Product }) {
             <h2 className="text-hud text-xs uppercase tracking-widest text-hyde-bone-dim mb-5">
               Pre-Order Details
             </h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form id="preorder-form" onSubmit={handleSubmit} className="space-y-4">
               <Field label="Full name" required>
                 <input
                   required
@@ -164,7 +203,7 @@ export function PreorderForm({ product }: { product: Product }) {
                 <button
                   type="submit"
                   disabled={status === "submitting"}
-                  className="text-hud text-sm uppercase tracking-widest px-8 py-3.5 transition-transform hover:scale-[1.03] disabled:opacity-60 cursor-pointer"
+                  className="hidden md:inline-flex text-hud text-sm uppercase tracking-widest px-8 py-3.5 transition-transform hover:scale-[1.03] disabled:opacity-60 cursor-pointer"
                   style={{ background: accentColor, color: "var(--hyde-ink)" }}
                 >
                   {status === "submitting" ? "Processing…" : "Pay & Pre-Order"}
@@ -180,6 +219,22 @@ export function PreorderForm({ product }: { product: Product }) {
             </form>
           </div>
         </div>
+      </div>
+
+      <div className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-between gap-4 border-t border-hyde-khaki-dim bg-hyde-black/95 px-6 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] backdrop-blur-md md:hidden">
+        <div>
+          <p className="text-hud text-xs text-hyde-bone-dim">Total</p>
+          <p className="text-display text-2xl text-hyde-bone">{formatNaira(total)}</p>
+        </div>
+        <button
+          type="submit"
+          form="preorder-form"
+          disabled={status === "submitting"}
+          className="min-h-12 px-5 text-hud text-sm uppercase disabled:opacity-60 cursor-pointer"
+          style={{ background: accentColor, color: "var(--hyde-ink)" }}
+        >
+          {status === "submitting" ? "Processing…" : "Pay & Pre-Order"}
+        </button>
       </div>
 
       <style jsx global>{`

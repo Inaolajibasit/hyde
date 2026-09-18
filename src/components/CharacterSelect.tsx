@@ -30,7 +30,7 @@ export function CharacterSelect() {
   const accentColor = product.accent === "blood" ? "var(--hyde-blood)" : "var(--hyde-gold)";
 
   return (
-    <main className="relative min-h-screen bg-hyde-black overflow-hidden">
+    <main className="relative min-h-screen bg-hyde-black overflow-hidden pb-24 lg:pb-0">
       <div className="hyde-grain" />
       <div className="max-w-7xl mx-auto px-6 sm:px-10 pt-20 pb-8">
         <Link
@@ -76,10 +76,11 @@ export function CharacterSelect() {
           {/* Main viewer */}
           <div className="lg:col-span-2 order-1 lg:order-2 relative">
             <div className="flex items-center justify-between mb-3 lg:hidden">
-              <button onClick={() => go(-1)} aria-label="Previous bag" className="text-hyde-bone-dim">
+              <button onClick={() => setPhotoIndex((i) => (i - 1 + product.image.length) % product.image.length)} aria-label="Previous photo" className="min-h-11 min-w-11 text-hyde-bone-dim">
                 <ChevronLeft />
               </button>
-              <button onClick={() => go(1)} aria-label="Next bag" className="text-hyde-bone-dim">
+              <span className="text-hud text-xs text-hyde-bone-dim">Swipe photos · {photoIndex + 1} / {product.image.length}</span>
+              <button onClick={() => setPhotoIndex((i) => (i + 1) % product.image.length)} aria-label="Next photo" className="min-h-11 min-w-11 text-hyde-bone-dim">
                 <ChevronRight />
               </button>
             </div>
@@ -90,7 +91,17 @@ export function CharacterSelect() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.35 }}
-                className="relative aspect-square bg-hyde-black-soft border border-hyde-khaki-dim"
+                drag={product.image.length > 1 ? "x" : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.18}
+                onDragEnd={(_, info) => {
+                  if (Math.abs(info.offset.x) < 50 && Math.abs(info.velocity.x) < 500) return;
+                  play("hover");
+                  setPhotoIndex((current) =>
+                    (current + (info.offset.x < 0 ? 1 : -1) + product.image.length) % product.image.length
+                  );
+                }}
+                className="relative aspect-square bg-hyde-black-soft border border-hyde-khaki-dim touch-pan-y"
               >
                 <Image
                   src={product.image[photoIndex]}
@@ -98,6 +109,7 @@ export function CharacterSelect() {
                   fill
                   className="object-cover"
                   priority
+                  draggable={false}
                 />
                 <div
                   className="absolute top-3 left-3 text-hud text-[10px] uppercase px-2 py-1 tracking-widest"
@@ -168,9 +180,9 @@ export function CharacterSelect() {
                 <h1 className="text-display text-4xl sm:text-5xl text-hyde-bone leading-none mb-3">
                   {product.name}
                 </h1>
-                <p className="text-hyde-bone-dim italic text-lg mb-5">{product.tagline}</p>
+                <p className="text-secondary text-hyde-bone-dim text-2xl mb-5">{product.tagline}</p>
 
-                <p className="text-hyde-bone-dim/90 leading-relaxed mb-6">
+                <p className="text-product-description text-hyde-bone-dim/90 leading-relaxed mb-6">
                   {product.description}
                 </p>
 
@@ -203,7 +215,7 @@ export function CharacterSelect() {
                   <Link
                     href={`/preorder/${product.handle}`}
                     onClick={() => play("select")}
-                    className="text-hud text-sm uppercase tracking-widest px-8 py-3.5 transition-transform hover:scale-[1.03]"
+                    className="hidden lg:inline-flex text-hud text-sm uppercase tracking-widest px-8 py-3.5 transition-transform hover:scale-[1.03]"
                     style={{ background: accentColor, color: "var(--hyde-ink)" }}
                   >
                     Select →
@@ -213,6 +225,17 @@ export function CharacterSelect() {
             </AnimatePresence>
           </div>
         </div>
+      </div>
+      <div className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-between gap-4 border-t border-hyde-khaki-dim bg-hyde-black/95 px-6 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] backdrop-blur-md lg:hidden">
+        <span className="text-display text-2xl text-hyde-bone">{formatNaira(product.price)}</span>
+        <Link
+          href={`/preorder/${product.handle}`}
+          onClick={() => play("select")}
+          className="inline-flex min-h-12 items-center justify-center px-6 text-hud text-sm uppercase"
+          style={{ background: accentColor, color: "var(--hyde-ink)" }}
+        >
+          Pre-Order →
+        </Link>
       </div>
     </main>
   );

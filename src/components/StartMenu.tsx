@@ -157,10 +157,10 @@ export function StartMenu() {
                   className="rounded-full opacity-90"
                 />
                 <div>
-                  <h1 className="text-display text-5xl sm:text-6xl xl:text-7xl text-hyde-bone leading-none">
+                  <h1 className="text-display text-7xl sm:text-8xl xl:text-9xl text-hyde-bone leading-none">
                     HYDE
                   </h1>
-                  <p className="text-hud text-[10px] text-hyde-gold uppercase tracking-[0.3em] mt-1">
+                  <p className="text-secondary text-lg text-hyde-gold mt-1">
                     Wear the wild
                   </p>
                 </div>
@@ -207,7 +207,7 @@ export function StartMenu() {
                       <span
                         className={`text-display text-3xl sm:text-4xl xl:text-5xl transition-all duration-400 ${
                           isActive
-                            ? "text-hyde-bone tracking-wide"
+                            ? "text-hyde-bone"
                             : "text-hyde-bone-dim/50"
                         }`}
                       >
@@ -218,7 +218,7 @@ export function StartMenu() {
                       <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="text-hud text-[10px] text-hyde-gold uppercase pl-8 tracking-widest"
+                        className="text-secondary text-lg text-hyde-gold pl-8"
                       >
                         {item.hint}
                       </motion.p>

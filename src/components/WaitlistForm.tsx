@@ -65,7 +65,7 @@ export function WaitlistForm() {
           Next Drop
         </p>
         <h1 className="text-display text-4xl text-hyde-bone mb-3">Join the Waitlist</h1>
-        <p className="text-hyde-bone-dim/70 mb-8">
+        <p className="text-secondary text-hyde-bone-dim/70 text-xl mb-8">
           Founders&apos; drop is limited to 250 units per bag. Get on the list for what comes
           after.
         </p>

@@ -57,9 +57,11 @@
   --color-hyde-khaki-dim: var(--hyde-khaki-dim);
   --color-hyde-ink: var(--hyde-ink);
 
-  --font-display: "Bebas Neue", "Arial Narrow", sans-serif;
-  --font-body: "Inter", system-ui, sans-serif;
-  --font-hud: "JetBrains Mono", "Courier New", monospace;
+  --font-display: "Jaro", Impact, sans-serif;
+  --font-body: "Jaro", system-ui, sans-serif;
+  --font-hud: "Jaro", system-ui, sans-serif;
+  --font-secondary: "Jersey 10", sans-serif;
+  --font-product-description: "Montserrat", system-ui, sans-serif;
 }
 
 * {
@@ -129,7 +131,17 @@ body {
 
 .text-display {
   font-family: var(--font-display);
-  letter-spacing: 0.04em;
+  letter-spacing: -0.02em;
+}
+
+.text-secondary {
+  font-family: var(--font-secondary);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.text-product-description {
+  font-family: var(--font-product-description);
 }
 
 .text-hud {

@@ -87,16 +87,11 @@ Vercel's free (Hobby) tier is the natural fit for Next.js and is genuinely free 
 
 ## 5. Fonts
 
-Fonts currently load via a `<link>` tag in `src/app/layout.tsx` (Bebas Neue, Cormorant Garamond, JetBrains Mono from Google Fonts) rather than `next/font/google`, only because this sandbox's build environment couldn't reach `fonts.googleapis.com` to verify it. **On Vercel, switch to `next/font/google`** for better performance (fonts get self-hosted and don't block first paint):
+Google Fonts are loaded through the stylesheet link in `src/app/layout.tsx`: **Jaro** is the primary site font, **Jersey 10** is used for taglines and accent copy, and **Montserrat** is used for product descriptions. The corresponding font roles are defined in `src/app/globals.css`.
 
-```tsx
-import { Bebas_Neue, Cormorant_Garamond, JetBrains_Mono } from "next/font/google";
-```
-
-Happy to make this swap for you directly — just ask.
+The project uses a Google Fonts stylesheet link because the local build environment may not reach `fonts.googleapis.com` during a `next/font/google` build. The fonts load from Google when the site is opened in a browser with network access.
 
 ---
-
 ## 6. Rotating secrets
 
 `SHOPIFY_STOREFRONT_TOKEN` and `LEADS_WEBHOOK_URL` are sensitive. Anyone with the Storefront token can read your product catalogue and create carts; anyone with the webhook URL can spam it with fake leads. **Treat both as secrets from day one.**
