@@ -140,6 +140,16 @@ There's also an older, fully-built video-panel version of this same concept stil
 
 ---
 
+## 9. Search visibility
+
+The canonical site is `https://www.hydelabs.site` (`hydelabs.site` redirects there). Set `SITE_URL` to that origin in production; the code also uses it as a fallback. The site emits canonical URLs, a sitemap at `/sitemap.xml`, and a sitemap reference in `/robots.txt`.
+
+After deployment, verify the domain in Google Search Console and Bing Webmaster Tools. Submit `https://www.hydelabs.site/sitemap.xml`, inspect the homepage and both product pre-order URLs, and request indexing if they are not yet indexed. Use Google's Rich Results Test to check the product markup. Keep the real public product price and availability aligned with the site and, if you use Google Merchant Center, with its product feed.
+
+Search engines and AI search tools need accessible, useful pages and consistent signals about the brand. Replace the placeholder social handles in `src/lib/socials.ts` with your real profiles, describe HYDE consistently across those profiles, and publish genuine product details and photography. The site's robots rules allow public pages to be crawled, including by AI search crawlers. Indexing, ranking for the broad word “Hyde,” and chatbot recommendations cannot be guaranteed by code alone.
+
+---
+
 ## Project structure
 
 ```

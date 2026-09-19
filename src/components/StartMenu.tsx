@@ -229,6 +229,10 @@ export function StartMenu() {
             </ul>
           </nav>
 
+          <p className="mt-7 max-w-md text-sm leading-relaxed text-hyde-bone-dim/80">
+            HYDE makes bold vegan leather duffel bags in Lagos, Nigeria. Explore the Zambezi founders&apos; drop. <Link href="/about" className="text-hyde-gold underline underline-offset-4 hover:text-hyde-bone">About HYDE</Link>
+          </p>
+
           <motion.p
             initial={{ opacity: 0 }}
             animate={booted ? { opacity: 1 } : {}}

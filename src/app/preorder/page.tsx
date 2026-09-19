@@ -2,8 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import { products, formatNaira, coverImage } from "@/lib/products";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = { title: "Pre-Order — HYDE" };
+export const metadata = pageMetadata({
+  title: "Pre-Order a Zambezi Bag",
+  description: "Pre-order a HYDE Zambezi bag from the founders' drop. Choose the leopard or dark edition, crafted in Lagos with bold vegan leather details.",
+  path: "/preorder",
+  image: "/images/hero-founder-duo.jpeg",
+});
 
 export default function PreorderIndexPage() {
   return (

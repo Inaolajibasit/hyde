@@ -5,16 +5,32 @@ import { ThemeProvider } from "@/lib/theme-context";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { absoluteSiteUrl, getSiteOrigin } from "@/lib/seo";
+
+const siteOrigin = getSiteOrigin();
+const socialImage = absoluteSiteUrl("/images/hero-founder-duo.jpeg");
 
 export const metadata: Metadata = {
-  title: "HYDE — Wear the Wild",
+  applicationName: "HYDE",
+  title: { default: "HYDE | Bold Bags Made in Lagos", template: "%s | HYDE" },
   description:
-    "HYDE is a Lagos-made leather goods brand — duffels, belts, slippers and scarves finished in exotic-print vegan leather. Founders' drop now open for pre-order.",
-  metadataBase: new URL("https://hyde.example.com"),
+    "Discover HYDE, a Lagos fashion accessories brand making bold vegan leather duffel bags. Explore the Zambezi founders' drop and pre-order your bag.",
+  metadataBase: siteOrigin ? new URL(siteOrigin) : undefined,
+  robots: { index: true, follow: true },
   openGraph: {
-    title: "HYDE — Wear the Wild",
-    description: "Nigerian-made exotic-print leather goods. Founders' drop now open.",
+    title: "HYDE | Bold Bags Made in Lagos",
+    description: "Statement vegan leather duffel bags from Lagos. Explore the HYDE Zambezi founders' drop.",
+    siteName: "HYDE",
     type: "website",
+    locale: "en_NG",
+    ...(siteOrigin ? { url: siteOrigin } : {}),
+    ...(socialImage ? { images: [{ url: socialImage, alt: "HYDE founders' drop bags" }] } : {}),
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "HYDE | Bold Bags Made in Lagos",
+    description: "Statement vegan leather duffel bags from Lagos.",
+    ...(socialImage ? { images: [socialImage] } : {}),
   },
 };
 
