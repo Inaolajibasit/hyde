@@ -8,6 +8,7 @@ import { Volume2, VolumeX } from "lucide-react";
 import { HeroBackground, HeroImage } from "./HeroBackground";
 import { DustField } from "./DustField";
 import { useSound } from "@/lib/sound-context";
+import styles from "./StartMenu.module.css";
 
 type MenuItem = {
   label: string;
@@ -112,55 +113,52 @@ export function StartMenu() {
   }, [isTouch]);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden flex items-center">
+    <main className={`${styles.page} start-menu-page`}>
       <HeroBackground images={HERO_IMAGES} activeIndex={activeIndex} />
       <DustField />
 
       {/* Left-weighted scrim so menu text stays legible over any photo */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(90deg, var(--hyde-black) 0%, color-mix(in srgb, var(--hyde-black) 78%, transparent) 32%, transparent 62%), linear-gradient(0deg, var(--hyde-black) 0%, transparent 30%, transparent 78%, color-mix(in srgb, var(--hyde-black) 55%, transparent) 100%)",
-        }}
+        className={styles.scrim}
       />
-      <div className="hyde-vignette" />
+      <div className={styles.vignette} />
       <div className="hyde-grain" />
 
       {/* Sound toggle — sits to the LEFT of the theme toggle (which is at
           right-6 in the layout) so the two controls read as a paired row. */}
       <button
         onClick={toggleMuted}
-        className="absolute top-6 right-32 z-50 flex items-center gap-2 text-hyde-bone-dim hover:text-hyde-gold transition-colors text-hud text-xs uppercase cursor-pointer"
+        className={styles.soundButton}
         aria-label={muted ? "Unmute sound" : "Mute sound"}
       >
         {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
         <span className="hidden sm:inline">{muted ? "Sound Off" : "Sound On"}</span>
       </button>
 
-      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 sm:px-12 xl:px-20">
-        <div className="max-w-xl">
+      <div className={styles.shell}>
+        <div className={styles.panel}>
+          <div className={styles.panelRule} aria-hidden="true"><span>HYDE / 001</span><span>START MENU</span></div>
           <AnimatePresence>
             {booted && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
-                className="mb-10 flex items-center gap-4"
+                className={styles.brand}
               >
                 <Image
                   src="/images/logo.png"
                   alt="Hyde"
                   width={56}
                   height={56}
-                  className="rounded-full opacity-90"
+                  className={styles.logo}
                 />
                 <div>
-                  <h1 className="text-display text-7xl sm:text-8xl xl:text-9xl text-hyde-bone leading-none">
+                  <h1 className={styles.wordmark}>
                     HYDE
                   </h1>
-                  <p className="text-secondary text-lg text-hyde-gold mt-1">
+                  <p className={styles.tagline}>
                     Wear the wild
                   </p>
                 </div>
@@ -169,7 +167,7 @@ export function StartMenu() {
           </AnimatePresence>
 
           <nav aria-label="Main menu">
-            <ul className="space-y-1">
+            <ul className={styles.menuList}>
               {ITEMS.map((item, i) => {
                 const isActive = i === activeIndex;
                 return (
@@ -194,18 +192,18 @@ export function StartMenu() {
                         userTappedRef.current = true;
                         play("select");
                       }}
-                      className="group flex items-center gap-4 py-2.5"
+                      className={`${styles.menuItem} ${isActive ? styles.menuItemActive : ""}`}
                     >
                       <span
                         aria-hidden
-                        className={`text-base leading-none transition-colors text-hyde-blood ${
+                        className={`${styles.selector} ${
                           isActive ? "hyde-arrow-bounce" : "opacity-0"
                         }`}
                       >
                         ▸
                       </span>
                       <span
-                        className={`text-display text-3xl sm:text-4xl xl:text-5xl transition-all duration-400 ${
+                        className={`${styles.menuLabel} ${
                           isActive
                             ? "text-hyde-bone"
                             : "text-hyde-bone-dim/50"
@@ -218,7 +216,7 @@ export function StartMenu() {
                       <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="text-secondary text-lg text-hyde-gold pl-8"
+                        className={styles.menuHint}
                       >
                         {item.hint}
                       </motion.p>
@@ -229,7 +227,7 @@ export function StartMenu() {
             </ul>
           </nav>
 
-          <p className="mt-7 max-w-md text-sm leading-relaxed text-hyde-bone-dim/80">
+          <p className={styles.brandNote}>
             HYDE makes bold vegan leather duffel bags in Lagos, Nigeria. Explore the Zambezi founders&apos; drop. <Link href="/about" className="text-hyde-gold underline underline-offset-4 hover:text-hyde-bone">About HYDE</Link>
           </p>
 
@@ -237,15 +235,15 @@ export function StartMenu() {
             initial={{ opacity: 0 }}
             animate={booted ? { opacity: 1 } : {}}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="mt-14 text-hyde-bone-dim/60 text-hud text-[10px] uppercase tracking-widest"
+            className={styles.controls}
           >
             ↑↓ to select · enter to confirm
           </motion.p>
         </div>
       </div>
 
-      <div className="absolute bottom-4 left-0 right-0 text-center z-10">
-        <p className="text-hud text-[9px] text-hyde-bone-dim/40 uppercase tracking-widest">
+      <div className={styles.sceneMeta}>
+        <p>
           Handmade in Lagos · Founders&apos; Drop
         </p>
       </div>
