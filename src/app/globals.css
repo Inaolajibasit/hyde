@@ -202,15 +202,3 @@ body {
     scroll-behavior: auto !important;
   }
 }
-/* The home screen uses a fixed cinematic palette so its HUD remains readable
-   even when the visitor has selected the site's light theme. */
-body:has(.start-menu-page) .global-theme-toggle,
-body:has(.start-menu-page) .global-site-footer {
-  color: rgba(242, 234, 217, 0.68);
-  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
-}
-
-body:has(.start-menu-page) .global-theme-toggle:hover,
-body:has(.start-menu-page) .global-site-footer a:hover {
-  color: #d0a536;
-}
